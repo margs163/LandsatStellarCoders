@@ -28,7 +28,7 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-nasaenv
+.nasaenv
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -130,6 +130,7 @@ env/
 venv/
 ENV/
 env.bak/
+.nasaenv
 venv.bak/
 
 # Spyder project settings
