@@ -24,7 +24,7 @@ class User(SQLAlchemyBaseUserTableUUID, Base):
         back_populates="user_owner", cascade="all, delete-orphan"
         )
 
-class Location(DeclarativeBase):
+class Location(Base):
     __tablename__ = "location"
 
     id: Mapped[uuid.UUID] = mapped_column(GUID, primary_key=True, default_factory=uuid.uuid4)
