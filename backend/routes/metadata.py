@@ -15,7 +15,7 @@ async def get_metada(location: Coordinates, scene_filter: SceneFilter, user: use
     scene_filter = {
         "maxResults": 1,
         "metadataType": "full",
-        "datasetName": scene_filter.dataset,
+        "datasetName": "landsat_ot_c2_l2",
         "sceneFilter": {
             "acquisitionFilter": {
                 "start": str(scene_filter.startDate),
@@ -40,4 +40,21 @@ async def get_metada(location: Coordinates, scene_filter: SceneFilter, user: use
                 json=scene_filter, 
                 headers={"X-Auth-Token": api_key}) as response:
                     result = await response.json()
-                    return result
+                    # return result
+                    global scene_id
+                    scene_id = result["data"]["results"][0]["displayId"]
+                    global image_link
+                    image_link = result["data"]["results"][0]["browse"][0]["browsePath"]
+    
+    metadata_payload = {
+           "datasetName": "landsat_ot_c2_l2",
+           "entityId": scene_id,
+           "idType": "displayId",
+           "metadataType": "full"
+    } 
+
+    async with aiohttp.ClientSession() as sess:
+            async with sess.post("https://m2m.cr.usgs.gov/api/api/json/stable/scene-metadata", 
+                json=metadata_payload, 
+                headers={"X-Auth-Token": api_key}) as response:
+                   return {"metadata": await response.json(), "image": image_link}
