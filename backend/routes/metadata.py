@@ -10,7 +10,7 @@ import aiohttp
 router = APIRouter(prefix="/metadata")
 
 @router.post("/")
-async def get_metada(location: Coordinates, scene_filter: SceneFilter, user: user_dependency, client: Annotated[aiohttp.ClientSession, Depends(get_client)], api_key: Annotated[str, key_generator]):
+async def get_metada(location: Coordinates, scene_filter: SceneFilter, user: user_dependency, client: Annotated[aiohttp.ClientSession, Depends(get_client)], api_key: Annotated[str, Depends(key_generator)]):
     bbox = [location.longitude - 0.01, location.latitude - 0.01, location.longitude + 0.01, location.latitude + 0.01]
     scene_filter = {
         "maxResults": 1,
