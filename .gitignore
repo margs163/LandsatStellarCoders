@@ -130,7 +130,6 @@ env/
 venv/
 ENV/
 env.bak/
-.nasaenv
 venv.bak/
 
 # Spyder project settings
