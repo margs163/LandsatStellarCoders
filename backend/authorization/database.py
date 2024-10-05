@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_STRING")
 
 class Base(DeclarativeBase):
     pass
@@ -27,7 +27,7 @@ class User(SQLAlchemyBaseUserTableUUID, Base):
 class Location(Base):
     __tablename__ = "location"
 
-    id: Mapped[uuid.UUID] = mapped_column(GUID, primary_key=True, default_factory=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(GUID, primary_key=True, default=uuid.uuid4)
     wrs_row: Mapped[int] = mapped_column(Integer, nullable=False)
     wrs_column: Mapped[int] = mapped_column(Integer, nullable=False)
 
@@ -40,11 +40,6 @@ class Location(Base):
 
 engine = create_async_engine(DATABASE_URL)
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
-
-
-async def create_db_and_tables():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:

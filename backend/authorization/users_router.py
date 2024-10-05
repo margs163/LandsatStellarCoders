@@ -13,7 +13,7 @@ fastapi_users = FastAPIUsers[User, uuid.UUID](
     [auth_backend],
 )
 
-router = FastAPI()
+router = APIRouter()
 router.include_router(
     fastapi_users.get_users_router(UserRead, UserUpdate),
     prefix="/users",
