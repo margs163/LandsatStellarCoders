@@ -22,11 +22,11 @@ async def is_valid_imaging_overpass(satellite: EarthSatellite, overpass_time, ta
         overpass = datetime.fromisoformat(overpass_time)
         geocentric = satellite.at(ts.utc(overpass)).subpoint()
         lat, lon = geocentric.latitude.degrees, geocentric.longitude.degrees
-        result = await get_wrs2_path_row(lat, lon, session)
-        return result["wrs_path"] == 167 and result["wrs_row"] == 24
+        result = await get_wrs2_path_row(lat, lon, session, api_key)
+        return result["wrs_path"] == target_path and result["wrs_row"] == target_row
 
 async def get_wrs2_path_row(lat, lon, session: ClientSession, api_key: str) -> dict:
-        async with session as sess:
+        async with aiohttp.ClientSession() as sess:
             async with sess.post("https://m2m.cr.usgs.gov/api/api/json/stable/scene-search", json={
                 "maxResults": 1,
                 "metadataType": "full",
@@ -75,7 +75,7 @@ async def get_satellite_acquisition_date(
     overpasses_landsat9 = find_overpasses(landsat_9, observer_location, start_time, end_time, altitude_deg)
 
     # # Step 6: Filter the overpasses for actual imaging opportunities
-    imaging_passes_landsat8 = [time for time, _ in overpasses_landsat8 if await is_valid_imaging_overpass(landsat_8, time, dict_result["wrs_path"], dict_result["wrs_row"], client, api_key)]
-    imaging_passes_landsat9 = [time for time, _ in overpasses_landsat9 if await is_valid_imaging_overpass(landsat_9, time, dict_result["wrs_path"], dict_result["wrs_row"], client, api_key)]
+    imaging_passes_landsat8 = [time for time, _ in overpasses_landsat8 if await is_valid_imaging_overpass(landsat_8, time, dict_result["wrs_path"], dict_result["wrs_row"], client, api_key=api_key)]
+    imaging_passes_landsat9 = [time for time, _ in overpasses_landsat9 if await is_valid_imaging_overpass(landsat_9, time, dict_result["wrs_path"], dict_result["wrs_row"], client, api_key=api_key)]
 
-    return {"landsat_8_overpass": imaging_passes_landsat8, "landsat_9_overpass": imaging_passes_landsat9, "wrs": dict_result}
+    return {"landsat_8_overpass": imaging_passes_landsat8, "landsat_9_overpass": imaging_passes_landsat9}

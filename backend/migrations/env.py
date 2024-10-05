@@ -1,6 +1,6 @@
 from logging.config import fileConfig
 from dotenv import load_dotenv
-from authorization.database import User, Location, Base
+from authorization.database import User, Predictions, Base
 import os
 load_dotenv()
 

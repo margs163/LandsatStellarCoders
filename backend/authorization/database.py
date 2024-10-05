@@ -6,8 +6,9 @@ from fastapi_users.db import SQLAlchemyBaseUserTableUUID, SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String, Integer, Boolean, Float, ForeignKey
+from sqlalchemy import String, Integer, Boolean, Float, ForeignKey, DateTime
 from fastapi_users_db_sqlalchemy.generics import GUID
+from datetime import datetime
 
 from dotenv import load_dotenv
 import os
@@ -18,13 +19,12 @@ DATABASE_URL = os.getenv("DATABASE_STRING")
 class Base(DeclarativeBase):
     pass
 
-
 class User(SQLAlchemyBaseUserTableUUID, Base):
-    selected_locations: Mapped[Optional[List["Location"]]] = relationship(
+    user_predictions: Mapped[Optional[List["Predictions"]]] = relationship(
         back_populates="user_owner", cascade="all, delete-orphan"
         )
 
-class Location(Base):
+class Predictions(Base):
     __tablename__ = "location"
 
     id: Mapped[uuid.UUID] = mapped_column(GUID, primary_key=True, default=uuid.uuid4)
@@ -34,8 +34,11 @@ class Location(Base):
     latitude: Mapped[float] = mapped_column(Float, nullable=False)
     longitude: Mapped[float] = mapped_column(Float, nullable=False)
 
+    acquision_datetime: Mapped[str] = mapped_column(DateTime, nullable=False)
+    acquisition_satellite: Mapped[str] = mapped_column(String, nullable=False)
+
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
-    user_owner: Mapped["User"] = relationship(back_populates="selected_locations")
+    user_owner: Mapped["User"] = relationship(back_populates="user_predictions")
 
 
 engine = create_async_engine(DATABASE_URL)
