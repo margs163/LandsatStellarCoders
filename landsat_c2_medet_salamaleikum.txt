@@ -1,0 +1,39 @@
+{
+    "requestId": 1801364872,
+    "version": "stable",
+    "sessionId": 294484950,
+    "data": [
+        {
+            "abstractText": "The USGS Earth Resources Observation and Science (EROS) Center archive holds data collected by the Landsat suite of satellites, beginning with Landsat 1 in 1972.  Landsat 8, launched February 11, 2013, is the latest Landsat sensor.",
+            "acquisitionStart": "2013-04-11",
+            "acquisitionEnd": null,
+            "catalogs": [
+                "EE"
+            ],
+            "collectionName": "Landsat 8-9 OLI/TIRS C2 L2",
+            "collectionLongName": "Landsat 8-9 Operational Land Imager and Thermal Infrared Sensor Collection 2 Level-2",
+            "datasetId": "5e83d14f2fc39685",
+            "datasetAlias": "landsat_ot_c2_l2",
+            "datasetCategoryName": "Landsat Collection 2 Level-2",
+            "dataOwner": "LSAA",
+            "dateUpdated": "2023-10-17 12:40:07.907403-05",
+            "doiNumber": "https://doi.org/10.5066/P9OGBGM6 ",
+            "ingestFrequency": "P1D",
+            "keywords": "None,Visible Wavelengths,Earth Science,Infrared Wavelengths,Infrared Imagery,Imagery ,Earth Resources Observation and Science (EROS) Center,Coastal Aerosol ,Visible Imagery,U.S. Geological Survey (USGS),Thermal Infrared Sensor (TIRS),Operational Land Imager (OLI),Radiance,Remote Sensing,Satellite,ISO 19115 Topic Category,ImageryBaseMapsEarthCover",
+            "legacyId": 9885,
+            "sceneCount": 3235020,
+            "spatialBounds": {
+                "north": 84.441826835,
+                "east": 194.444152276,
+                "south": -84.517916731,
+                "west": -180.009966965
+            },
+            "temporalCoverage": "[\"2013-03-18 00:00:00-05\",\"2024-09-17 00:00:00-05\"]",
+            "supportCloudCover": true,
+            "supportDeletionSearch": true,
+            "allowInKmz": true
+        }
+    ],
+    "errorCode": null,
+    "errorMessage": null
+}
