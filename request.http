@@ -1,7 +1,0 @@
-curl -X 'POST' \
-  'https://m2m.cr.usgs.gov/api/api/json/stable/login-token' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "username": "mif3107",
-  "token": "1GvAKE31cZkIg9EJuPHNK9r5vsEpGMSuIpgT2pKC8!gZreG5Nm8Kb625kYobN1Jl"
-}'

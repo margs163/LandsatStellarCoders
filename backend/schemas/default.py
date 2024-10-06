@@ -12,3 +12,22 @@ class SceneFilter(BaseModel):
     startDate: datetime.date | None = Field(default=None),
     endDate: datetime.date | None = Field(default=None),
     season: list[int] | None = Field(default=None)
+
+class Prediction(BaseModel):
+    LandsatSatellite: int
+    LandsatAcquisitionDate: str
+    WRS2Path: int
+    WRS2Row: int
+    LocationLatitude: float
+    LocationLongitude: float
+
+class L8Pred(Prediction):
+    pass
+
+class L9Pred(Prediction):
+    pass
+
+class PredData(BaseModel):
+    L8: list[L8Pred]
+    L9: list[L9Pred]
+

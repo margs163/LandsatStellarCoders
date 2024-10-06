@@ -67,8 +67,8 @@ async def get_satellite_acquisition_date(
     current_time = datetime.now()
 
     # # Define a time window for prediction
-    start_time = ts.utc(2024, 9, 1)
-    end_time = ts.utc(2024, 10, 1) 
+    start_time = ts.utc(current_time.year, current_time.month, current_time.day)
+    end_time = ts.utc(current_time.year, current_time.month, current_time.day) + timedelta(days_delta) 
 
     # Get overpasses for Landsat 8 and 9
     overpasses_landsat8 = find_overpasses(landsat_8, observer_location, start_time, end_time, altitude_deg)
@@ -78,4 +78,20 @@ async def get_satellite_acquisition_date(
     imaging_passes_landsat8 = [time for time, _ in overpasses_landsat8 if await is_valid_imaging_overpass(landsat_8, time, dict_result["wrs_path"], dict_result["wrs_row"], client, api_key=api_key)]
     imaging_passes_landsat9 = [time for time, _ in overpasses_landsat9 if await is_valid_imaging_overpass(landsat_9, time, dict_result["wrs_path"], dict_result["wrs_row"], client, api_key=api_key)]
 
-    return {"landsat_8_overpass": imaging_passes_landsat8, "landsat_9_overpass": imaging_passes_landsat9}
+    predictions_8 = [{
+          "LandsatSatellite": 8, 
+          "LandsatAcquisitionDate": passing_time, 
+          "WRS2Path": dict_result["wrs_path"], 
+          "WRS2Row": dict_result["wrs_row"], 
+          "LocationLatitude": location.latitude, 
+          "LocationLongitude": location.longitude} for passing_time in imaging_passes_landsat8]
+
+    prediction_9 = [{
+          "LandsatSatellite": 8, 
+          "LandsatAcquisitionDate": passing_time, 
+          "WRS2Path": dict_result["wrs_path"], 
+          "WRS2Row": dict_result["wrs_row"], 
+          "LocationLatitude": location.latitude, 
+          "LocationLongitude": location.longitude} for passing_time in imaging_passes_landsat9]
+    
+    return {"L8": predictions_8, "L9": prediction_9}
