@@ -8,7 +8,6 @@ from .routes.metadata import router as metadata_router
 from .authorization.users_router import router as users_router
 from .routes.predictions import router as notification_router
 from .routes.test_api import router as prediction_router
-from .routes.example import router as download_router
 import os
 from dotenv import load_dotenv
 from .routes.scene import router as scene_router
@@ -32,7 +31,6 @@ app.add_middleware(
 
 app.include_router(notification_router)
 app.include_router(metadata_router)
-app.include_router(download_router)
 app.include_router(auth_router)
 app.include_router(register_router)
 app.include_router(reset_pwd_router)

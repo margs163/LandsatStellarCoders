@@ -3,12 +3,11 @@ import smtplib
 from email.message import EmailMessage
 from datetime import datetime
 import os
-from ..celery_app import celery_app
 from dotenv import load_dotenv
 from fastapi import HTTPException
 load_dotenv()
 
-SMTP_HOST = "smtp@gmail.com"
+SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT = 465
 SMTP_USER = os.getenv("emailfrom")
 SMTP_PWD = os.getenv("smtp_pwd")
@@ -28,7 +27,7 @@ def get_email_template_landsat(email: str, data: dict):
     email = EmailMessage()
     email['Subject'] = "Landsat Acquisition"
     email['From'] = SMTP_USER
-    email['To'] = email
+    email['To'] = "aldanovdaniyal@gmail.com"
     email.set_content(
     '<div style="display: flex; align-items: center; justify-content: center;">'
     '<h1>Hello! This is a notification email from Landsat!</h1>'
@@ -46,12 +45,8 @@ def get_email_template_landsat(email: str, data: dict):
     )
     return email
 
-@celery_app.task
 def send_landsat_acquisition_email(email: str, data: dict):
-    try:
         email = get_email_template_landsat(email, data)
         with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as server:
             server.login(SMTP_USER, SMTP_PWD)
             server.send_message(email)
-    except Exception as e:
-        raise HTTPException(400, detail=f"failed to send email, {e}")
